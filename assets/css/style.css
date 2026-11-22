@@ -1,14 +1,15 @@
 /* ========================================================
-   SI-PAJAK TERPADU - MONOCHROME EDITORIAL DESIGN SYSTEM
-   Theme: Pure Black & White Minimalist | Font: Poppins
-   Crafted with Anti-Slop Principles: High Contrast & Pure Clarity
+   SI-PAJAK TERPADU - MONOCHROME EDITORIAL DESIGN
+   Font: Poppins | Theme: Pure Black & White Minimalist
+   Identical Architecture & Typography to Perpustakaan
    ======================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
   --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
+  /* Monochrome Palette */
   --bg-main: #FFFFFF;
   --bg-subtle: #FAFAFA;
   --bg-card: #FFFFFF;
@@ -23,40 +24,473 @@
   --border-medium: #D4D4D8;
   --border-dark: #0A0A0A;
   
+  --focus-ring: #0A0A0A;
+  
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
   
   --transition: 0.15s ease-in-out;
+  --container-max: 1200px;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-main);
+  color: var(--text-main);
 }
 
 body {
   font-family: var(--font-family) !important;
+  font-weight: 400 !important;
+  line-height: 1.5;
   background-color: var(--bg-main) !important;
   color: var(--text-main) !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-family) !important;
-  color: var(--text-main) !important;
-  letter-spacing: -0.02em;
-}
-
-/* Accessibility Focus Standard (R-32) */
+/* Accessibility Focus Indicator */
 :focus-visible {
-  outline: 2px solid var(--border-dark) !important;
+  outline: 2px solid var(--focus-ring) !important;
   outline-offset: 2px !important;
 }
 
-/* Clear Minimalist Navbar */
-.site-navbar {
-  background: #FFFFFF !important;
-  border-bottom: 1px solid var(--border-light) !important;
-  box-shadow: none !important;
+/* Typography Scale (Strictly Semibold 600 - Never Heavy Bold/Black) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family) !important;
+  color: var(--text-main) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
-/* Universal Flat Aesthetics: No Gimmicky Soft Shadows */
+h1 { font-size: 2.25rem !important; }
+h2 { font-size: 1.75rem !important; }
+h3 { font-size: 1.25rem !important; }
+h4 { font-size: 1.1rem !important; }
+
+p {
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
+  font-size: 0.95rem !important;
+}
+
+a {
+  color: var(--text-main);
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+
+a:hover {
+  opacity: 0.75;
+}
+
+/* Tame all heavy weights */
+b, strong, .font-bold, .font-extrabold, .font-black {
+  font-weight: 600 !important;
+}
+
+span, td, div, li, label {
+  font-weight: 400;
+}
+
+/* Layout Container */
+.container, .max-w-7xl {
+  width: 100%;
+  max-width: var(--container-max) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+.site-main {
+  flex: 1 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+/* ========================================================
+   CLEAR MINIMALIST NAVBAR (Same as Perpustakaan)
+   ======================================================== */
+.site-header {
+  width: 100%;
+  background: var(--bg-main) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  position: relative;
+  z-index: 50;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4.25rem;
+  gap: 1.5rem;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.03em;
+  color: var(--text-main) !important;
+  text-transform: uppercase;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--text-main);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 500 !important;
+  color: var(--text-muted) !important;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-main) !important;
+  background: var(--bg-subtle) !important;
+  opacity: 1;
+}
+
+.nav-link.active {
+  font-weight: 600 !important;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+/* ========================================================
+   BUTTONS & CONTROLS
+   ======================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.btn-sm {
+  min-height: 34px;
+  padding: 0 0.85rem;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  background-color: var(--text-main) !important;
+  color: #FFFFFF !important;
+  border-color: var(--text-main) !important;
+}
+
+.btn-primary:hover {
+  background-color: #27272A !important;
+  border-color: #27272A !important;
+  color: #FFFFFF !important;
+  opacity: 1;
+}
+
+.btn-secondary {
+  background-color: transparent !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-dark) !important;
+}
+
+.btn-secondary:hover {
+  background-color: var(--text-main) !important;
+  color: #FFFFFF !important;
+  opacity: 1;
+}
+
+.btn-subtle {
+  background-color: var(--bg-subtle) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-light) !important;
+  font-weight: 500 !important;
+}
+
+.btn-subtle:hover {
+  background-color: var(--border-light) !important;
+  opacity: 1;
+}
+
+/* ========================================================
+   CARDS & STATS GRID
+   ======================================================== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: border-color var(--transition);
+}
+
+.card:hover {
+  border-color: var(--border-medium);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.stat-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.1;
+}
+
+.stat-desc {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-top: 0.4rem;
+}
+
+/* ========================================================
+   TABLES
+   ======================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.table-clean {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.table-clean th, table th {
+  background: var(--bg-subtle) !important;
+  color: var(--text-main) !important;
+  font-weight: 600 !important;
+  font-size: 0.78rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.85rem 1rem !important;
+  border-bottom: 1px solid var(--border-medium) !important;
+  white-space: nowrap;
+}
+
+.table-clean td, table td {
+  padding: 0.9rem 1rem !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  color: var(--text-main) !important;
+  vertical-align: middle;
+  font-weight: 400;
+}
+
+.table-clean tr:last-child td {
+  border-bottom: none;
+}
+
+.table-clean tr:hover td, table tr:hover td {
+  background: #FCFCFC;
+}
+
+/* ========================================================
+   BADGES & LABELS
+   ======================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600 !important;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.badge-black {
+  background: var(--text-main) !important;
+  color: #FFFFFF !important;
+}
+
+.badge-outline {
+  border: 1px solid var(--border-dark) !important;
+  color: var(--text-main) !important;
+  background: transparent !important;
+}
+
+.badge-muted {
+  background: var(--bg-subtle) !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+/* ========================================================
+   FORMS & INPUTS
+   ======================================================== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.form-control, input, select, textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.6rem 0.85rem;
+  font-family: var(--font-family) !important;
+  font-size: 0.9rem;
+  font-weight: 400 !important;
+  color: var(--text-main) !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: border-color var(--transition);
+}
+
+.form-control:focus, input:focus, select:focus, textarea:focus {
+  border-color: var(--text-main) !important;
+  outline: 2px solid var(--text-main) !important;
+  outline-offset: 1px !important;
+}
+
+/* ========================================================
+   FOOTER (Same as Perpustakaan)
+   ======================================================== */
+.site-footer {
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-main);
+  padding: 2.5rem 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: auto;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.footer-links a:hover {
+  color: var(--text-main);
+}
+
+/* Flat overrides for legacy classes */
 .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl {
   box-shadow: none !important;
 }
@@ -65,120 +499,6 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-md) !important;
 }
 
-/* Monochrome Buttons */
-.btn-primary, button[type="submit"]:not(.btn-subtle):not(.btn-secondary) {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-  border: 1px solid #000000 !important;
-  font-weight: 600 !important;
-  border-radius: var(--radius-sm) !important;
-  transition: all var(--transition) !important;
-}
-
-.btn-primary:hover, button[type="submit"]:hover {
-  background-color: #27272A !important;
-  color: #FFFFFF !important;
-}
-
-.btn-secondary {
-  background-color: transparent !important;
-  color: #000000 !important;
-  border: 1px solid #000000 !important;
-  font-weight: 600 !important;
-  border-radius: var(--radius-sm) !important;
-}
-
-.btn-secondary:hover {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-}
-
-.btn-subtle {
-  background-color: var(--bg-subtle) !important;
-  color: #0A0A0A !important;
-  border: 1px solid var(--border-light) !important;
-  font-weight: 500 !important;
-  border-radius: var(--radius-sm) !important;
-}
-
-.btn-subtle:hover {
-  background-color: var(--border-light) !important;
-}
-
-/* Monochrome Badges */
-.badge-bw-solid {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
-  border-radius: var(--radius-sm) !important;
-  font-weight: 600 !important;
-  font-size: 0.75rem !important;
-}
-
-.badge-bw-outline {
-  background-color: transparent !important;
-  color: #0A0A0A !important;
-  border: 1px solid #0A0A0A !important;
-  border-radius: var(--radius-sm) !important;
-  font-weight: 600 !important;
-  font-size: 0.75rem !important;
-}
-
-.badge-bw-muted {
-  background-color: var(--bg-subtle) !important;
-  color: var(--text-muted) !important;
-  border: 1px solid var(--border-light) !important;
-  border-radius: var(--radius-sm) !important;
-  font-weight: 600 !important;
-  font-size: 0.75rem !important;
-}
-
-/* Universal Clean Tables */
-table {
-  border-collapse: collapse !important;
-  width: 100% !important;
-}
-
-th {
-  background-color: var(--bg-subtle) !important;
-  color: #0A0A0A !important;
-  font-size: 0.78rem !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  border-bottom: 1px solid var(--border-medium) !important;
-}
-
-td {
-  border-bottom: 1px solid var(--border-light) !important;
-  color: #0A0A0A !important;
-}
-
-tr:hover td {
-  background-color: #FCFCFC !important;
-}
-
-/* Force Remove All Slop Gradients / Shadows / Glows */
-.hero-pattern {
-  background-color: #FFFFFF !important;
-  background-image: none !important;
-}
-
-/* Input Fields Clean Focus */
-input, select, textarea {
-  font-family: var(--font-family) !important;
-  border-radius: var(--radius-sm) !important;
-  border: 1px solid var(--border-medium) !important;
-  background-color: #FFFFFF !important;
-  color: #0A0A0A !important;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #000000 !important;
-  outline: 2px solid #000000 !important;
-  outline-offset: 1px !important;
-}
-
-/* Universal Monochrome Color Normalization Across All Pages */
 .bg-emerald-50, .bg-emerald-100, .bg-blue-50, .bg-blue-100, 
 .bg-purple-50, .bg-purple-100, .bg-amber-50, .bg-amber-100, .bg-slate-50, .bg-slate-100 {
   background-color: #F4F4F5 !important;
@@ -200,15 +520,34 @@ input:focus, select:focus, textarea:focus {
   color: #FFFFFF !important;
 }
 
-.bg-emerald-500:hover, .bg-amber-500:hover, .bg-tax-900:hover, .bg-purple-700:hover {
-  background-color: #27272A !important;
-  color: #FFFFFF !important;
-}
-
-.border-emerald-300, .border-amber-300, .border-blue-300, .border-purple-300, .border-slate-200, .border-slate-300 {
-  border-color: #E4E4E7 !important;
-}
-
-.border-tax-700, .border-tax-800, .border-tax-900 {
-  border-color: #E4E4E7 !important;
+/* ========================================================
+   RESPONSIVE
+   ======================================================== */
+@media (max-width: 860px) {
+  .mobile-toggle {
+    display: block;
+  }
+  
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-main);
+    flex-direction: column;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    gap: 0.5rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+  }
+  
+  .nav-links.open {
+    display: flex;
+  }
+  
+  .nav-link {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
 }

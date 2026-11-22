@@ -6,14 +6,8 @@ if ($flash):
     $message = $flash['message'] ?? '';
     $isError = in_array($type, ['danger', 'error']);
 ?>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-    <div id="alertBox" class="flex items-center justify-between p-4 rounded border <?= $isError ? 'bg-black text-white border-black' : 'bg-zinc-50 text-black border-zinc-300' ?> transition-all duration-300">
-        <div class="flex items-center space-x-3">
-            <span class="text-sm font-medium"><?= htmlspecialchars($message) ?></span>
-        </div>
-        <button type="button" onclick="document.getElementById('alertBox').remove()" class="<?= $isError ? 'text-zinc-400 hover:text-white' : 'text-zinc-500 hover:text-black' ?> transition ml-4" aria-label="Tutup">
-            &times;
-        </button>
-    </div>
+<div class="alert <?= $isError ? 'alert-error' : 'alert-info' ?>" id="alertBox" style="margin-bottom: 2rem;">
+    <span><?= htmlspecialchars($message) ?></span>
+    <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:inherit; cursor:pointer; font-weight:700; margin-left:1rem;" aria-label="Tutup">&times;</button>
 </div>
 <?php endif; ?>

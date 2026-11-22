@@ -6,16 +6,16 @@ $page_title = 'Dashboard Operasional Perpajakan';
 $active_nav = 'dashboard';
 
 // Ambil Statistik Ringkasan Nyata dari Basis Data
-$countWP = $pdo->query("SELECT COUNT(*) FROM wajib_pajak")->fetchColumn();
-$countWPBadan = $pdo->query("SELECT COUNT(*) FROM wajib_pajak WHERE jenis_wp = 'Badan'")->fetchColumn();
-$countWPOP = $pdo->query("SELECT COUNT(*) FROM wajib_pajak WHERE jenis_wp = 'Orang Pribadi'")->fetchColumn();
+$countWP = (int)$pdo->query("SELECT COUNT(*) FROM wajib_pajak")->fetchColumn();
+$countWPBadan = (int)$pdo->query("SELECT COUNT(*) FROM wajib_pajak WHERE jenis_wp = 'Badan'")->fetchColumn();
+$countWPOP = (int)$pdo->query("SELECT COUNT(*) FROM wajib_pajak WHERE jenis_wp = 'Orang Pribadi'")->fetchColumn();
 
-$countSPT = $pdo->query("SELECT COUNT(*) FROM spt")->fetchColumn();
-$sumPaid = $pdo->query("SELECT COALESCE(SUM(jumlah_bayar), 0) FROM pembayaran_pajak WHERE status_pembayaran = 'Paid'")->fetchColumn();
-$sumUnpaid = $pdo->query("SELECT COALESCE(SUM(jumlah_bayar), 0) FROM pembayaran_pajak WHERE status_pembayaran = 'Unpaid'")->fetchColumn();
+$countSPT = (int)$pdo->query("SELECT COUNT(*) FROM spt")->fetchColumn();
+$sumPaid = (float)$pdo->query("SELECT COALESCE(SUM(jumlah_bayar), 0) FROM pembayaran_pajak WHERE status_pembayaran = 'Paid'")->fetchColumn();
+$sumUnpaid = (float)$pdo->query("SELECT COALESCE(SUM(jumlah_bayar), 0) FROM pembayaran_pajak WHERE status_pembayaran = 'Unpaid'")->fetchColumn();
 
-$countBillingPaid = $pdo->query("SELECT COUNT(*) FROM pembayaran_pajak WHERE status_pembayaran = 'Paid'")->fetchColumn();
-$countBillingUnpaid = $pdo->query("SELECT COUNT(*) FROM pembayaran_pajak WHERE status_pembayaran = 'Unpaid'")->fetchColumn();
+$countBillingPaid = (int)$pdo->query("SELECT COUNT(*) FROM pembayaran_pajak WHERE status_pembayaran = 'Paid'")->fetchColumn();
+$countBillingUnpaid = (int)$pdo->query("SELECT COUNT(*) FROM pembayaran_pajak WHERE status_pembayaran = 'Unpaid'")->fetchColumn();
 
 // Transaksi Terbaru
 $stmtTransaksi = $pdo->query("
@@ -55,278 +55,197 @@ require_once __DIR__ . '/layout/header.php';
 require_once __DIR__ . '/layout/alerts.php';
 ?>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-    
-    <!-- Top Welcome & Quick Actions -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded border border-zinc-200">
-        <div>
-            <div class="flex items-center gap-2.5">
-                <h1 class="text-2xl font-bold text-black">Dashboard Administrasi Pajak</h1>
-                <span class="px-2 py-0.5 rounded text-xs font-semibold bg-zinc-100 text-black border border-zinc-300">MySQL Terhubung</span>
-            </div>
-            <p class="text-sm text-zinc-600 mt-1">
-                Pencatatan penerimaan negara, kepatuhan Wajib Pajak, dan kontrol transaksi billing perpajakan.
-            </p>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-            <a href="pembayaran.php?action=create" class="min-h-[40px] px-4 py-2 rounded bg-black hover:bg-zinc-800 text-white font-semibold text-xs transition flex items-center gap-1.5">
-                + Buat Billing
-            </a>
-            <a href="wajib_pajak.php?action=create" class="min-h-[40px] px-4 py-2 rounded bg-transparent hover:bg-zinc-100 text-black font-semibold text-xs border border-black transition flex items-center gap-1.5">
-                + Wajib Pajak
-            </a>
-            <a href="spt.php?action=create" class="min-h-[40px] px-4 py-2 rounded bg-zinc-100 hover:bg-zinc-200 text-black font-semibold text-xs border border-zinc-300 transition flex items-center gap-1.5">
-                + Lapor SPT
-            </a>
-        </div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted);">
+      Ringkasan Operasional
+    </span>
+    <h1 style="margin-top: 0.25rem; margin-bottom: 0.35rem;">Dashboard Administrasi Pajak</h1>
+    <p>Pencatatan penerimaan kas negara, data kepatuhan Wajib Pajak, dan transaksi e-Billing.</p>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+    <a href="pembayaran.php?action=create" class="btn btn-primary">+ Buat Billing</a>
+    <a href="wajib_pajak.php?action=create" class="btn btn-secondary">+ Wajib Pajak</a>
+    <a href="spt.php?action=create" class="btn btn-subtle">+ Lapor SPT</a>
+  </div>
+</div>
+
+<!-- 4 KPI Metrics Grid (Matching Perpustakaan) -->
+<div class="stats-grid">
+  <div class="stat-box">
+    <div class="stat-label">Penerimaan Realisasi</div>
+    <div class="stat-number"><?= formatRupiah($sumPaid) ?></div>
+    <div class="stat-desc"><?= $countBillingPaid ?> transaksi lunas tervalidasi NTPN</div>
+  </div>
+
+  <div class="stat-box">
+    <div class="stat-label">Billing Pending</div>
+    <div class="stat-number"><?= formatRupiah($sumUnpaid) ?></div>
+    <div class="stat-desc"><?= $countBillingUnpaid ?> kode billing menunggu setoran</div>
+  </div>
+
+  <div class="stat-box">
+    <div class="stat-label">Total Wajib Pajak</div>
+    <div class="stat-number"><?= $countWP ?> WP</div>
+    <div class="stat-desc">Badan: <?= $countWPBadan ?> &bull; Orang Pribadi: <?= $countWPOP ?></div>
+  </div>
+
+  <div class="stat-box">
+    <div class="stat-label">Pelaporan SPT</div>
+    <div class="stat-number"><?= $countSPT ?> Laporan</div>
+    <div class="stat-desc">SPT Elektronik BPS terdata resmi</div>
+  </div>
+</div>
+
+<!-- Section: Transaksi Pembayaran Pajak Terbaru -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Transaksi Pembayaran Pajak Terbaru</h2>
+      <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.2rem;">
+        Daftar kode billing yang diterbitkan beserta status verifikasi kas negara.
+      </p>
     </div>
+    <a href="pembayaran.php" class="btn btn-subtle btn-sm">Buka Seluruh Transaksi</a>
+  </div>
 
-    <!-- 4 KPI Metrics Grid (Monochrome) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <!-- Card 1: Penerimaan Pajak (Paid) -->
-        <div class="bg-white rounded border border-zinc-200 p-5">
-            <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider block mb-1">Penerimaan Realisasi</span>
-            <div class="text-2xl font-bold text-black font-mono"><?= formatRupiah($sumPaid) ?></div>
-            <div class="mt-2 text-xs text-zinc-500">
-                <span class="font-bold text-black"><?= $countBillingPaid ?> Billing Lunas</span> &bull; Terverifikasi NTPN
-            </div>
-        </div>
-
-        <!-- Card 2: Piutang / Pending (Unpaid) -->
-        <div class="bg-white rounded border border-zinc-200 p-5">
-            <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider block mb-1">Billing Pending</span>
-            <div class="text-2xl font-bold text-black font-mono"><?= formatRupiah($sumUnpaid) ?></div>
-            <div class="mt-2 text-xs text-zinc-500">
-                <span class="font-bold text-black"><?= $countBillingUnpaid ?> Belum Setor</span>
-            </div>
-        </div>
-
-        <!-- Card 3: Wajib Pajak Terdaftar -->
-        <div class="bg-white rounded border border-zinc-200 p-5">
-            <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider block mb-1">Wajib Pajak (WP)</span>
-            <div class="text-2xl font-bold text-black font-mono"><?= $countWP ?> WP</div>
-            <div class="mt-2 text-xs text-zinc-500 flex items-center justify-between">
-                <span>Badan: <strong class="text-black"><?= $countWPBadan ?></strong></span>
-                <span>Orang Pribadi: <strong class="text-black"><?= $countWPOP ?></strong></span>
-            </div>
-        </div>
-
-        <!-- Card 4: SPT Terlaporkan -->
-        <div class="bg-white rounded border border-zinc-200 p-5">
-            <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider block mb-1">SPT Masuk</span>
-            <div class="text-2xl font-bold text-black font-mono"><?= $countSPT ?> Laporan</div>
-            <div class="mt-2 text-xs text-zinc-500">
-                <span class="text-black font-bold">BPS Elektronik</span> &bull; Masa &amp; Tahunan
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        <!-- Left 8 Cols: Transaksi Pembayaran Pajak -->
-        <div class="lg:col-span-8 space-y-6">
-            <div class="bg-white rounded border border-zinc-200 p-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-zinc-200">
-                    <div>
-                        <h2 class="text-base font-bold text-black">
-                            Transaksi Pembayaran Pajak Terbaru
-                        </h2>
-                        <p class="text-xs text-zinc-500">Kode billing, DPP, jumlah setoran kas negara, dan status validasi NTPN.</p>
-                    </div>
-                    <a href="pembayaran.php" class="text-xs font-bold text-black hover:underline">
-                        Buka Seluruh Transaksi &rarr;
+  <div class="table-responsive" style="border: none;">
+    <table class="table-clean">
+      <thead>
+        <tr>
+          <th>Kode Billing</th>
+          <th>Wajib Pajak</th>
+          <th>Jenis Pajak</th>
+          <th style="text-align: right;">Jumlah Pajak</th>
+          <th style="text-align: center;">Status</th>
+          <th style="text-align: right; width: 170px;">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (empty($transaksiList)): ?>
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+              Belum ada transaksi pembayaran pajak. Silakan terbitkan kode billing baru.
+            </td>
+          </tr>
+        <?php else: ?>
+          <?php foreach ($transaksiList as $row): ?>
+            <tr>
+              <td>
+                <div style="font-family: monospace; font-weight: 600;"><?= htmlspecialchars($row['kode_billing']) ?></div>
+                <?php if ($row['ntpn']): ?>
+                  <div style="font-size: 0.72rem; font-family: monospace; color: var(--text-light);">NTPN: <?= htmlspecialchars($row['ntpn']) ?></div>
+                <?php else: ?>
+                  <div style="font-size: 0.72rem; color: var(--text-light);">Menunggu setoran</div>
+                <?php endif; ?>
+              </td>
+              <td>
+                <div style="font-weight: 600;"><?= htmlspecialchars($row['nama_wp']) ?></div>
+                <div style="font-size: 0.75rem; color: var(--text-light); font-family: monospace;"><?= htmlspecialchars($row['npwp']) ?></div>
+              </td>
+              <td>
+                <div><?= htmlspecialchars($row['nama_jenis_pajak']) ?></div>
+                <div style="font-size: 0.75rem; color: var(--text-light); font-family: monospace;">KAP: <?= htmlspecialchars($row['kode_akun_pajak']) ?></div>
+              </td>
+              <td style="text-align: right; font-family: monospace; font-weight: 600;">
+                <?= formatRupiah($row['jumlah_bayar']) ?>
+              </td>
+              <td style="text-align: center;">
+                <?php if ($row['status_pembayaran'] === 'Paid'): ?>
+                  <span class="badge badge-black">LUNAS</span>
+                <?php else: ?>
+                  <span class="badge badge-outline">PENDING</span>
+                <?php endif; ?>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 0.35rem;">
+                  <a href="cetak_billing.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-subtle btn-sm" title="Cetak BPN">
+                    Cetak
+                  </a>
+                  <?php if ($row['status_pembayaran'] === 'Unpaid'): ?>
+                    <a href="pembayaran.php?action=pay&id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">
+                      Bayar
                     </a>
+                  <?php endif; ?>
+                  <a href="pembayaran.php?action=edit&id=<?= $row['id'] ?>" class="btn btn-subtle btn-sm">
+                    Ubah
+                  </a>
                 </div>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs bg-white border border-zinc-200">
-                        <thead>
-                            <tr>
-                                <th class="py-3 px-3">Kode Billing</th>
-                                <th class="py-3 px-3">Wajib Pajak</th>
-                                <th class="py-3 px-3">Jenis Pajak</th>
-                                <th class="py-3 px-3 text-right">Jumlah Pajak</th>
-                                <th class="py-3 px-3 text-center">Status</th>
-                                <th class="py-3 px-3 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($transaksiList)): ?>
-                                <tr>
-                                    <td colspan="6" class="py-10 text-center">
-                                        <p class="text-xs font-bold text-black">Belum ada transaksi pembayaran pajak</p>
-                                        <p class="text-xs text-zinc-500 mt-1">Terbitkan kode billing 15 digit baru untuk mencatat setoran pajak pertama.</p>
-                                        <div class="pt-3">
-                                            <a href="pembayaran.php?action=create" class="inline-flex items-center px-4 py-2 rounded bg-black text-white font-bold text-xs">
-                                                + Terbitkan Billing Baru
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach ($transaksiList as $row): ?>
-                                    <tr>
-                                        <td class="py-3 px-3">
-                                            <div class="font-mono font-bold text-black"><?= htmlspecialchars($row['kode_billing']) ?></div>
-                                            <?php if ($row['ntpn']): ?>
-                                                <div class="text-[11px] font-mono text-zinc-600 font-semibold">NTPN: <?= htmlspecialchars($row['ntpn']) ?></div>
-                                            <?php else: ?>
-                                                <div class="text-[11px] font-mono text-zinc-400">Menunggu pembayaran</div>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="py-3 px-3">
-                                            <div class="font-bold text-black"><?= htmlspecialchars($row['nama_wp']) ?></div>
-                                            <div class="text-xs font-mono text-zinc-500"><?= htmlspecialchars($row['npwp']) ?></div>
-                                        </td>
-                                        <td class="py-3 px-3">
-                                            <span class="text-zinc-800 font-medium"><?= htmlspecialchars($row['nama_jenis_pajak']) ?></span>
-                                            <span class="block text-xs font-mono text-zinc-500">KAP: <?= htmlspecialchars($row['kode_akun_pajak']) ?></span>
-                                        </td>
-                                        <td class="py-3 px-3 text-right font-mono font-bold text-black">
-                                            <?= formatRupiah($row['jumlah_bayar']) ?>
-                                        </td>
-                                        <td class="py-3 px-3 text-center">
-                                            <?php if ($row['status_pembayaran'] === 'Paid'): ?>
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-black text-white">
-                                                    LUNAS
-                                                </span>
-                                            <?php elseif ($row['status_pembayaran'] === 'Unpaid'): ?>
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold border border-black text-black">
-                                                    PENDING
-                                                </span>
-                                            <?php else: ?>
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-zinc-200 text-zinc-700">
-                                                    EXPIRED
-                                                </span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="py-3 px-3 text-center">
-                                            <div class="flex items-center justify-center gap-1">
-                                                <a href="cetak_billing.php?id=<?= $row['id'] ?>" target="_blank" class="px-2 py-1 rounded bg-zinc-100 hover:bg-zinc-200 text-black text-xs font-semibold" title="Cetak Surat Setoran Pajak (SSP/BPN)">
-                                                    Cetak
-                                                </a>
-                                                <?php if ($row['status_pembayaran'] === 'Unpaid'): ?>
-                                                    <a href="pembayaran.php?action=pay&id=<?= $row['id'] ?>" class="px-2 py-1 rounded bg-black text-white font-bold text-xs" title="Konfirmasi Pembayaran">
-                                                        Bayar
-                                                    </a>
-                                                <?php endif; ?>
-                                                <a href="pembayaran.php?action=edit&id=<?= $row['id'] ?>" class="px-2 py-1 rounded bg-zinc-100 hover:bg-zinc-200 text-black text-xs" title="Edit Transaksi">
-                                                    Ubah
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- SPT Terkini -->
-            <div class="bg-white rounded border border-zinc-200 p-6">
-                <div class="flex items-center justify-between mb-4 pb-3 border-b border-zinc-200">
-                    <h2 class="text-base font-bold text-black">
-                        Pelaporan SPT Terkini
-                    </h2>
-                    <a href="spt.php" class="text-xs font-bold text-black hover:underline">Buka Modul SPT &rarr;</a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs bg-white border border-zinc-200">
-                        <thead>
-                            <tr>
-                                <th class="py-2.5 px-3">No. BPS</th>
-                                <th class="py-2.5 px-3">Wajib Pajak</th>
-                                <th class="py-2.5 px-3">Periode</th>
-                                <th class="py-2.5 px-3">Status SPT</th>
-                                <th class="py-2.5 px-3 text-right">Nominal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($sptList)): ?>
-                                <tr>
-                                    <td colspan="5" class="py-6 text-center text-zinc-500">
-                                        Belum ada pelaporan SPT terdaftar.
-                                    </td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach ($sptList as $spt): ?>
-                                    <tr>
-                                        <td class="py-2.5 px-3 font-mono font-bold text-black"><?= htmlspecialchars($spt['nomor_spt']) ?></td>
-                                        <td class="py-2.5 px-3 font-medium text-black"><?= htmlspecialchars($spt['nama_wp']) ?></td>
-                                        <td class="py-2.5 px-3 text-zinc-600"><?= $spt['jenis_spt'] ?> <?= $spt['tahun_pajak'] ?> <?= $spt['masa_pajak'] ? '('.$spt['masa_pajak'].')' : '' ?></td>
-                                        <td class="py-2.5 px-3">
-                                            <span class="px-2 py-0.5 rounded text-xs font-semibold bg-zinc-100 text-black border border-zinc-200">
-                                                <?= $spt['status_spt'] ?>
-                                            </span>
-                                        </td>
-                                        <td class="py-2.5 px-3 text-right font-mono font-bold text-black"><?= formatRupiah($spt['nominal_pajak']) ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right 4 Cols: Breakdown Jenis Pajak & System Status -->
-        <div class="lg:col-span-4 space-y-6">
-            
-            <!-- Breakdown Jenis Pajak -->
-            <div class="bg-white rounded border border-zinc-200 p-6 space-y-4">
-                <div class="flex justify-between items-center border-b border-zinc-200 pb-3">
-                    <h3 class="font-bold text-black text-sm">Penerimaan per Jenis Pajak</h3>
-                    <a href="jenis_pajak.php" class="text-xs font-semibold text-zinc-600 hover:text-black hover:underline">Kelola Tarif</a>
-                </div>
-                <div class="space-y-3">
-                    <?php foreach ($breakdownList as $item): ?>
-                        <div class="bg-zinc-50 rounded p-3 border border-zinc-200">
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="font-bold text-black"><?= htmlspecialchars($item['nama_jenis_pajak']) ?></span>
-                                <span class="font-mono text-black font-bold"><?= number_format($item['tarif_standar'], 2) ?>%</span>
-                            </div>
-                            <div class="flex justify-between items-center text-xs text-zinc-500 mt-1">
-                                <span><?= $item['total_trx'] ?> Transaksi</span>
-                                <span class="font-mono font-bold text-black"><?= formatRupiah($item['total_nominal_paid']) ?></span>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <!-- Database & Environment Card -->
-            <div class="bg-white text-black rounded p-6 space-y-4 border border-black">
-                <div class="border-b border-zinc-200 pb-3">
-                    <h4 class="font-bold text-sm text-black">Status Basis Data</h4>
-                    <p class="text-xs text-zinc-500">Laragon MySQL Server</p>
-                </div>
-
-                <div class="text-xs space-y-2 text-zinc-600">
-                    <div class="flex justify-between border-b border-zinc-100 pb-1">
-                        <span>Database:</span>
-                        <span class="font-mono text-black font-bold">db_perpajakan</span>
-                    </div>
-                    <div class="flex justify-between border-b border-zinc-100 pb-1">
-                        <span>Versi PHP:</span>
-                        <span class="font-mono text-black"><?= phpversion() ?></span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>URL Akses:</span>
-                        <span class="font-mono text-black font-semibold">localhost/perpajakan</span>
-                    </div>
-                </div>
-
-                <div class="pt-2">
-                    <a href="http://localhost/phpmyadmin/index.php?route=/database/structure&db=db_perpajakan" target="_blank" class="w-full min-h-[40px] inline-flex items-center justify-center px-4 py-2 rounded bg-black hover:bg-zinc-800 text-white font-semibold text-xs transition">
-                        Buka di phpMyAdmin
-                    </a>
-                </div>
-            </div>
-
-        </div>
+<!-- Grid 2 Kolom: Pelaporan SPT & Penerimaan per Jenis Pajak -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+  <!-- Pelaporan SPT Terkini -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title">Pelaporan SPT Terkini</h3>
+        <p style="font-size: 0.78rem; color: var(--text-light); margin-top: 0.2rem;">Arsip berkas SPT Masa dan Tahunan.</p>
+      </div>
+      <a href="spt.php" class="btn btn-subtle btn-sm">Kelola SPT</a>
     </div>
+
+    <div class="table-responsive" style="border: none;">
+      <table class="table-clean">
+        <thead>
+          <tr>
+            <th>No. BPS</th>
+            <th>Wajib Pajak</th>
+            <th>Periode</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (empty($sptList)): ?>
+            <tr><td colspan="4" style="text-align: center; padding: 1.5rem; color: var(--text-muted);">Belum ada SPT terdaftar.</td></tr>
+          <?php else: ?>
+            <?php foreach ($sptList as $spt): ?>
+              <tr>
+                <td style="font-family: monospace; font-weight: 600; font-size: 0.8rem;"><?= htmlspecialchars($spt['nomor_spt']) ?></td>
+                <td><?= htmlspecialchars($spt['nama_wp']) ?></td>
+                <td><?= $spt['jenis_spt'] ?> <?= $spt['tahun_pajak'] ?></td>
+                <td><span class="badge badge-muted"><?= $spt['status_spt'] ?></span></td>
+              </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Penerimaan per Jenis Pajak -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title">Penerimaan per Jenis Pajak</h3>
+        <p style="font-size: 0.78rem; color: var(--text-light); margin-top: 0.2rem;">Breakdown setoran berdasarkan kode objek.</p>
+      </div>
+      <a href="jenis_pajak.php" class="btn btn-subtle btn-sm">Tarif Pajak</a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <?php foreach ($breakdownList as $item): ?>
+        <div style="background: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+            <span style="font-weight: 600;"><?= htmlspecialchars($item['nama_jenis_pajak']) ?></span>
+            <span style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted);"><?= number_format($item['tarif_standar'], 2) ?>%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem;">
+            <span><?= $item['total_trx'] ?> Transaksi</span>
+            <span style="font-weight: 600; color: var(--text-main); font-family: monospace;"><?= formatRupiah($item['total_nominal_paid']) ?></span>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
 </div>
 
 <?php require_once __DIR__ . '/layout/footer.php'; ?>
