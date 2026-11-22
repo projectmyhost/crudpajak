@@ -59,126 +59,133 @@ function terbilang($nilai) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BPN - <?= htmlspecialchars($trx['kode_billing']) ?></title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
         @media print {
             .no-print {
                 display: none !important;
             }
             body {
-                background: white;
-                color: black;
+                background: white !important;
+                color: black !important;
                 font-size: 11pt;
             }
             .print-border {
                 border: 2px solid #000 !important;
+                box-shadow: none !important;
             }
         }
     </style>
 </head>
-<body class="bg-slate-100 p-4 sm:p-8 text-slate-800">
+<body class="bg-zinc-100 p-4 sm:p-8 text-black">
 
     <!-- Action Bar -->
     <div class="max-w-3xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-3 no-print">
-        <a href="pembayaran.php" class="inline-flex items-center min-h-[44px] gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-slate-300">
-            <i class="fa-solid fa-arrow-left"></i> Kembali ke Modul Pembayaran
+        <a href="pembayaran.php" class="inline-flex items-center min-h-[40px] text-xs font-semibold text-black bg-white px-4 py-2 rounded border border-zinc-300 hover:bg-zinc-50 transition">
+            &larr; Kembali ke Modul Pembayaran
         </a>
         <div class="flex gap-2">
-            <button onclick="window.print()" class="inline-flex items-center min-h-[44px] gap-2 text-xs font-bold text-tax-950 bg-amber-400 hover:bg-amber-500 px-5 py-2.5 rounded-xl shadow-md transition">
-                <i class="fa-solid fa-print"></i> Cetak Dokumen / Simpan PDF
+            <button onclick="window.print()" class="inline-flex items-center min-h-[40px] text-xs font-semibold text-white bg-black hover:bg-zinc-800 px-5 py-2 rounded transition">
+                Cetak Dokumen / Simpan PDF
             </button>
         </div>
     </div>
 
-    <!-- Official Document Box -->
-    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-300 p-8 sm:p-12 relative overflow-hidden print-border">
+    <!-- Official Document Box (Clean Editorial Monochrome) -->
+    <div class="max-w-3xl mx-auto bg-white rounded border border-black p-8 sm:p-12 relative overflow-hidden print-border shadow-sm">
         
         <!-- Watermark LUNAS jika status Paid -->
         <?php if ($trx['status_pembayaran'] === 'Paid'): ?>
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none rotate-[-25deg]">
-                <span class="text-9xl font-black text-emerald-800 tracking-widest border-8 border-emerald-800 px-12 py-4 rounded-3xl">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05] select-none rotate-[-25deg]">
+                <span class="text-9xl font-black text-black tracking-widest border-8 border-black px-12 py-4 rounded">
                     LUNAS
                 </span>
             </div>
         <?php endif; ?>
 
         <!-- Kop Dokumen Resmi -->
-        <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5 mb-6">
+        <div class="flex items-center justify-between border-b-2 border-black pb-5 mb-6">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-slate-900 text-amber-400 rounded-xl flex items-center justify-center text-3xl font-bold shadow-md">
-                    <i class="fa-solid fa-scale-balanced"></i>
+                <div class="w-12 h-12 bg-black text-white rounded flex items-center justify-center text-xl font-bold">
+                    P
                 </div>
                 <div>
-                    <h3 class="text-xs font-bold tracking-wider uppercase text-slate-600">Kementerian Keuangan Republik Indonesia</h3>
-                    <h2 class="text-lg font-black text-slate-900 uppercase tracking-tight">Direktorat Jenderal Pajak</h2>
-                    <p class="text-xs text-slate-500">Kantor Pelayanan Pajak: <?= htmlspecialchars($trx['nama_kpp']) ?> [<?= $trx['kode_kpp'] ?>]</p>
+                    <h3 class="text-xs font-bold tracking-wider uppercase text-zinc-500">Kementerian Keuangan Republik Indonesia</h3>
+                    <h2 class="text-lg font-bold text-black uppercase tracking-tight">Direktorat Jenderal Pajak</h2>
+                    <p class="text-xs text-zinc-600">Kantor Pelayanan Pajak: <?= htmlspecialchars($trx['nama_kpp']) ?> [<?= $trx['kode_kpp'] ?>]</p>
                 </div>
             </div>
             <div class="text-right">
-                <span class="inline-block px-3 py-1 bg-slate-900 text-amber-400 font-mono font-bold text-xs rounded tracking-wider uppercase">
+                <span class="inline-block px-3 py-1 bg-black text-white font-mono font-bold text-xs rounded tracking-wider uppercase">
                     e-Billing DJP
                 </span>
-                <p class="text-[10px] text-slate-400 font-mono mt-1">Ref: SI-PAJAK-BPN</p>
+                <p class="text-[10px] text-zinc-500 font-mono mt-1">Ref: SI-PAJAK-BPN</p>
             </div>
         </div>
 
         <!-- Judul Surat -->
         <div class="text-center mb-6">
-            <h1 class="text-xl font-black text-slate-900 tracking-wide uppercase">
+            <h1 class="text-xl font-bold text-black tracking-wide uppercase">
                 Bukti Penerimaan Negara (BPN)
             </h1>
-            <p class="text-xs text-slate-500">Surat Setoran Elektronik Berdasarkan Modul Penerimaan Negara Generasi Terpadu</p>
+            <p class="text-xs text-zinc-500">Surat Setoran Elektronik Berdasarkan Modul Penerimaan Negara Generasi Terpadu</p>
         </div>
 
         <!-- Status Tag -->
-        <div class="flex justify-between items-center bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6">
+        <div class="flex justify-between items-center bg-zinc-50 border border-zinc-200 rounded p-4 mb-6">
             <div>
-                <span class="text-xs text-slate-500 block">Status Dokumen:</span>
+                <span class="text-xs text-zinc-500 block">Status Dokumen:</span>
                 <?php if ($trx['status_pembayaran'] === 'Paid'): ?>
-                    <span class="text-sm font-extrabold text-emerald-700 flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-check"></i> TRANSAKSI SAH & DINYATAKAN LUNAS
+                    <span class="text-sm font-bold text-black">
+                        [LUNAS] TRANSAKSI SAH &amp; TERVERIFIKASI
                     </span>
                 <?php else: ?>
-                    <span class="text-sm font-extrabold text-amber-600 flex items-center gap-1.5">
-                        <i class="fa-solid fa-clock"></i> MENUNGGU PEMBAYARAN (UNPAID)
+                    <span class="text-sm font-bold text-black">
+                        [PENDING] MENUNGGU PEMBAYARAN KAS NEGARA
                     </span>
                 <?php endif; ?>
             </div>
             <div class="text-right">
-                <span class="text-xs text-slate-500 block">Kode Billing:</span>
-                <span class="font-mono text-lg font-black text-slate-900 tracking-widest"><?= htmlspecialchars($trx['kode_billing']) ?></span>
+                <span class="text-xs text-zinc-500 block">Kode Billing:</span>
+                <span class="font-mono text-lg font-bold text-black tracking-widest"><?= htmlspecialchars($trx['kode_billing']) ?></span>
             </div>
         </div>
 
         <!-- Grid Data Wajib Pajak -->
         <div class="mb-6 space-y-3">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 pb-1">
+            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 pb-1">
                 A. Data Wajib Pajak
             </h3>
             <table class="w-full text-xs">
                 <tbody>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500 w-44">NPWP (16 Digit):</td>
-                        <td class="py-1.5 font-mono font-bold text-slate-900"><?= htmlspecialchars($trx['npwp']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500 w-44">NPWP (16 Digit):</td>
+                        <td class="py-1.5 font-mono font-bold text-black"><?= htmlspecialchars($trx['npwp']) ?></td>
                     </tr>
                     <?php if ($trx['nik']): ?>
-                        <tr class="border-b border-slate-100">
-                            <td class="py-1.5 text-slate-500">NIK:</td>
-                            <td class="py-1.5 font-mono text-slate-800"><?= htmlspecialchars($trx['nik']) ?></td>
+                        <tr class="border-b border-zinc-100">
+                            <td class="py-1.5 text-zinc-500">NIK:</td>
+                            <td class="py-1.5 font-mono text-black"><?= htmlspecialchars($trx['nik']) ?></td>
                         </tr>
                     <?php endif; ?>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Nama Wajib Pajak:</td>
-                        <td class="py-1.5 font-bold text-slate-900 uppercase"><?= htmlspecialchars($trx['nama_wp']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Nama Wajib Pajak:</td>
+                        <td class="py-1.5 font-bold text-black uppercase"><?= htmlspecialchars($trx['nama_wp']) ?></td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Kategori Entitas:</td>
-                        <td class="py-1.5 text-slate-800"><?= htmlspecialchars($trx['jenis_wp']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Kategori Entitas:</td>
+                        <td class="py-1.5 text-zinc-800"><?= htmlspecialchars($trx['jenis_wp']) ?></td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Alamat Terdaftar:</td>
-                        <td class="py-1.5 text-slate-700"><?= htmlspecialchars($trx['alamat']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Alamat Terdaftar:</td>
+                        <td class="py-1.5 text-zinc-700"><?= htmlspecialchars($trx['alamat']) ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -186,65 +193,65 @@ function terbilang($nilai) {
 
         <!-- Grid Rincian Pembayaran -->
         <div class="mb-6 space-y-3">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 pb-1">
+            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 pb-1">
                 B. Rincian Setoran Pajak
             </h3>
             <table class="w-full text-xs">
                 <tbody>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500 w-44">Kode Akun Pajak (KAP):</td>
-                        <td class="py-1.5 font-mono font-bold text-slate-900"><?= htmlspecialchars($trx['kode_akun_pajak']) ?> - <?= htmlspecialchars($trx['nama_jenis_pajak']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500 w-44">Kode Akun Pajak (KAP):</td>
+                        <td class="py-1.5 font-mono font-bold text-black"><?= htmlspecialchars($trx['kode_akun_pajak']) ?> - <?= htmlspecialchars($trx['nama_jenis_pajak']) ?></td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Tarif Standar:</td>
-                        <td class="py-1.5 font-mono text-slate-800"><?= number_format($trx['tarif_standar'], 2) ?>%</td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Tarif Standar:</td>
+                        <td class="py-1.5 font-mono text-black"><?= number_format($trx['tarif_standar'], 2) ?>%</td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Dasar Pengenaan Pajak (DPP):</td>
-                        <td class="py-1.5 font-mono font-semibold text-slate-800"><?= formatRupiah($trx['dpp']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Dasar Pengenaan Pajak (DPP):</td>
+                        <td class="py-1.5 font-mono font-semibold text-black"><?= formatRupiah($trx['dpp']) ?></td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Nomor Transaksi Negara (NTPN):</td>
-                        <td class="py-1.5 font-mono font-black text-emerald-700 text-sm tracking-wider">
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Nomor Transaksi Negara (NTPN):</td>
+                        <td class="py-1.5 font-mono font-bold text-black text-sm tracking-wider">
                             <?= htmlspecialchars($trx['ntpn'] ?? 'MENUNGGU SETORAN KAS NEGARA') ?>
                         </td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Bank Persepsi:</td>
-                        <td class="py-1.5 font-semibold text-slate-800"><?= htmlspecialchars($trx['bank_persepsi'] ?? '-') ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Bank Persepsi:</td>
+                        <td class="py-1.5 font-semibold text-black"><?= htmlspecialchars($trx['bank_persepsi'] ?? '-') ?></td>
                     </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="py-1.5 text-slate-500">Waktu Pembayaran:</td>
-                        <td class="py-1.5 font-mono text-slate-800"><?= formatTanggalIndo($trx['tanggal_bayar']) ?></td>
+                    <tr class="border-b border-zinc-100">
+                        <td class="py-1.5 text-zinc-500">Waktu Pembayaran:</td>
+                        <td class="py-1.5 font-mono text-black"><?= formatTanggalIndo($trx['tanggal_bayar']) ?></td>
                     </tr>
-                    <tr class="bg-slate-50">
-                        <td class="py-2.5 px-2 text-slate-900 font-bold text-sm">Jumlah Pajak Disetor:</td>
-                        <td class="py-2.5 px-2 font-mono font-black text-xl text-slate-950"><?= formatRupiah($trx['jumlah_bayar']) ?></td>
+                    <tr class="bg-zinc-50">
+                        <td class="py-2.5 px-2 text-black font-bold text-sm">Jumlah Pajak Disetor:</td>
+                        <td class="py-2.5 px-2 font-mono font-bold text-xl text-black"><?= formatRupiah($trx['jumlah_bayar']) ?></td>
                     </tr>
-                    <tr class="bg-slate-50/50">
-                        <td class="py-2 px-2 text-slate-500 italic">Terbilang:</td>
-                        <td class="py-2 px-2 font-semibold text-slate-800 italic"># <?= strtoupper(terbilang($trx['jumlah_bayar'])) ?> RUPIAH #</td>
+                    <tr class="bg-zinc-50/50">
+                        <td class="py-2 px-2 text-zinc-500 italic">Terbilang:</td>
+                        <td class="py-2 px-2 font-semibold text-zinc-800 italic"># <?= strtoupper(terbilang($trx['jumlah_bayar'])) ?> RUPIAH #</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Catatan Legalitas & Verifikasi QR -->
-        <div class="mt-8 pt-6 border-t border-slate-300 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-600">
+        <!-- Catatan Legalitas -->
+        <div class="mt-8 pt-6 border-t border-zinc-300 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-600">
             <div class="space-y-1 text-center sm:text-left">
-                <p class="font-bold text-slate-900">Ketentuan Resmi:</p>
-                <p class="text-[11px] text-slate-500 max-w-md">
+                <p class="font-bold text-black">Ketentuan Resmi:</p>
+                <p class="text-[11px] text-zinc-500 max-w-md">
                     BPN ini dicetak melalui Sistem Basis Data Perpajakan SI-PAJAK terhubung dan diakui sebagai Bukti Penerimaan Surat Setoran Pajak yang sah sesuai regulasi Direktorat Jenderal Pajak.
                 </p>
-                <p class="text-[10px] text-slate-400 font-mono">Dicetak pada: <?= date('d/m/Y H:i:s') ?> WIB</p>
+                <p class="text-[10px] text-zinc-400 font-mono">Dicetak pada: <?= date('d/m/Y H:i:s') ?> WIB</p>
             </div>
             
             <div class="text-center flex-shrink-0">
-                <div class="w-24 h-24 bg-slate-100 border-2 border-dashed border-slate-400 rounded-xl flex flex-col items-center justify-center p-1 text-[9px] text-slate-500">
-                    <i class="fa-solid fa-qrcode text-3xl text-slate-800 mb-1"></i>
-                    <span>VALID DJP</span>
+                <div class="w-24 h-24 border-2 border-black rounded flex flex-col items-center justify-center p-1 text-[9px] text-black">
+                    <span class="font-bold text-base">DJP</span>
+                    <span>TERVALIDASI</span>
                 </div>
-                <span class="text-[9px] text-slate-400 font-mono mt-1 block">Otentikasi Digital</span>
+                <span class="text-[9px] text-zinc-500 font-mono mt-1 block">Otentikasi Digital</span>
             </div>
         </div>
 
@@ -252,4 +259,3 @@ function terbilang($nilai) {
 
 </body>
 </html>
-

@@ -1,0 +1,214 @@
+/* ========================================================
+   SI-PAJAK TERPADU - MONOCHROME EDITORIAL DESIGN SYSTEM
+   Theme: Pure Black & White Minimalist | Font: Poppins
+   Crafted with Anti-Slop Principles: High Contrast & Pure Clarity
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  --bg-main: #FFFFFF;
+  --bg-subtle: #FAFAFA;
+  --bg-card: #FFFFFF;
+  --bg-dark: #0A0A0A;
+  
+  --text-main: #0A0A0A;
+  --text-muted: #52525B;
+  --text-light: #71717A;
+  --text-on-dark: #FFFFFF;
+  
+  --border-light: #E4E4E7;
+  --border-medium: #D4D4D8;
+  --border-dark: #0A0A0A;
+  
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  
+  --transition: 0.15s ease-in-out;
+}
+
+body {
+  font-family: var(--font-family) !important;
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family) !important;
+  color: var(--text-main) !important;
+  letter-spacing: -0.02em;
+}
+
+/* Accessibility Focus Standard (R-32) */
+:focus-visible {
+  outline: 2px solid var(--border-dark) !important;
+  outline-offset: 2px !important;
+}
+
+/* Clear Minimalist Navbar */
+.site-navbar {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  box-shadow: none !important;
+}
+
+/* Universal Flat Aesthetics: No Gimmicky Soft Shadows */
+.shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl {
+  box-shadow: none !important;
+}
+
+.rounded-xl, .rounded-2xl, .rounded-3xl {
+  border-radius: var(--radius-md) !important;
+}
+
+/* Monochrome Buttons */
+.btn-primary, button[type="submit"]:not(.btn-subtle):not(.btn-secondary) {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #000000 !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-sm) !important;
+  transition: all var(--transition) !important;
+}
+
+.btn-primary:hover, button[type="submit"]:hover {
+  background-color: #27272A !important;
+  color: #FFFFFF !important;
+}
+
+.btn-secondary {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.btn-secondary:hover {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.btn-subtle {
+  background-color: var(--bg-subtle) !important;
+  color: #0A0A0A !important;
+  border: 1px solid var(--border-light) !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.btn-subtle:hover {
+  background-color: var(--border-light) !important;
+}
+
+/* Monochrome Badges */
+.badge-bw-solid {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+}
+
+.badge-bw-outline {
+  background-color: transparent !important;
+  color: #0A0A0A !important;
+  border: 1px solid #0A0A0A !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+}
+
+.badge-bw-muted {
+  background-color: var(--bg-subtle) !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+}
+
+/* Universal Clean Tables */
+table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+th {
+  background-color: var(--bg-subtle) !important;
+  color: #0A0A0A !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid var(--border-medium) !important;
+}
+
+td {
+  border-bottom: 1px solid var(--border-light) !important;
+  color: #0A0A0A !important;
+}
+
+tr:hover td {
+  background-color: #FCFCFC !important;
+}
+
+/* Force Remove All Slop Gradients / Shadows / Glows */
+.hero-pattern {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+}
+
+/* Input Fields Clean Focus */
+input, select, textarea {
+  font-family: var(--font-family) !important;
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--border-medium) !important;
+  background-color: #FFFFFF !important;
+  color: #0A0A0A !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #000000 !important;
+  outline: 2px solid #000000 !important;
+  outline-offset: 1px !important;
+}
+
+/* Universal Monochrome Color Normalization Across All Pages */
+.bg-emerald-50, .bg-emerald-100, .bg-blue-50, .bg-blue-100, 
+.bg-purple-50, .bg-purple-100, .bg-amber-50, .bg-amber-100, .bg-slate-50, .bg-slate-100 {
+  background-color: #F4F4F5 !important;
+  color: #0A0A0A !important;
+  border-color: #E4E4E7 !important;
+}
+
+.text-emerald-600, .text-emerald-700, .text-emerald-800, 
+.text-amber-600, .text-amber-700, .text-amber-800,
+.text-blue-600, .text-blue-700, .text-blue-800, 
+.text-purple-600, .text-purple-700, .text-purple-800, 
+.text-tax-950, .text-tax-900, .text-tax-800 {
+  color: #0A0A0A !important;
+}
+
+.bg-emerald-500, .bg-emerald-600, .bg-amber-500, .bg-amber-600, 
+.bg-blue-600, .bg-purple-600, .bg-purple-700, .bg-tax-900, .bg-tax-950 {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.bg-emerald-500:hover, .bg-amber-500:hover, .bg-tax-900:hover, .bg-purple-700:hover {
+  background-color: #27272A !important;
+  color: #FFFFFF !important;
+}
+
+.border-emerald-300, .border-amber-300, .border-blue-300, .border-purple-300, .border-slate-200, .border-slate-300 {
+  border-color: #E4E4E7 !important;
+}
+
+.border-tax-700, .border-tax-800, .border-tax-900 {
+  border-color: #E4E4E7 !important;
+}
