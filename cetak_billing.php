@@ -62,196 +62,310 @@ function terbilang($nilai) {
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #F4F4F5 !important;
+            padding: 2rem 1rem !important;
+            color: #0A0A0A !important;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
+        .billing-doc-container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            border: 1px solid #0A0A0A;
+            padding: 2.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .action-bar {
+            max-width: 760px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #0A0A0A;
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .doc-title {
+            text-align: center;
+            margin-bottom: 1.75rem;
+        }
+        .doc-title h1 {
+            font-size: 1.35rem !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .doc-title p {
+            font-size: 0.8rem;
+            color: #52525B;
+        }
+        .status-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FAFAFA;
+            border: 1px solid #E4E4E7;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+        .section-header {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #52525B;
+            border-bottom: 1px solid #E4E4E7;
+            padding-bottom: 0.35rem;
+            margin: 1.25rem 0 0.75rem 0;
+        }
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+        }
+        .doc-table td {
+            padding: 0.5rem 0.25rem;
+            border-bottom: 1px solid #F4F4F5;
+            vertical-align: top;
+        }
+        .doc-table td.label-col {
+            width: 180px;
+            color: #52525B;
+        }
+        .doc-table td.val-col {
+            color: #0A0A0A;
+        }
+        .total-highlight {
+            background: #FAFAFA;
+            border-top: 1px solid #0A0A0A;
+            border-bottom: 1px solid #0A0A0A !important;
+        }
+        .total-highlight td {
+            padding: 0.75rem 0.25rem !important;
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+        }
+        .doc-footer {
+            margin-top: 2rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #E4E4E7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.75rem;
+            color: #52525B;
+        }
+        .stamp-box {
+            width: 90px;
+            height: 90px;
+            border: 2px solid #0A0A0A;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 4px;
+            color: #0A0A0A;
         }
         @media print {
             .no-print {
                 display: none !important;
             }
             body {
-                background: white !important;
-                color: black !important;
-                font-size: 11pt;
+                background: #FFFFFF !important;
+                padding: 0 !important;
             }
-            .print-border {
-                border: 2px solid #000 !important;
+            .billing-doc-container {
+                border: 1px solid #0A0A0A !important;
                 box-shadow: none !important;
+                padding: 1.5rem !important;
             }
         }
     </style>
 </head>
-<body class="bg-zinc-100 p-4 sm:p-8 text-black">
+<body>
 
     <!-- Action Bar -->
-    <div class="max-w-3xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-3 no-print">
-        <a href="pembayaran.php" class="inline-flex items-center min-h-[40px] text-xs font-semibold text-black bg-white px-4 py-2 rounded border border-zinc-300 hover:bg-zinc-50 transition">
+    <div class="action-bar no-print">
+        <a href="pembayaran.php" class="btn btn-secondary btn-sm">
             &larr; Kembali ke Modul Pembayaran
         </a>
-        <div class="flex gap-2">
-            <button onclick="window.print()" class="inline-flex items-center min-h-[40px] text-xs font-semibold text-white bg-black hover:bg-zinc-800 px-5 py-2 rounded transition">
+        <div>
+            <button onclick="window.print()" class="btn btn-primary btn-sm">
                 Cetak Dokumen / Simpan PDF
             </button>
         </div>
     </div>
 
-    <!-- Official Document Box (Clean Editorial Monochrome) -->
-    <div class="max-w-3xl mx-auto bg-white rounded border border-black p-8 sm:p-12 relative overflow-hidden print-border shadow-sm">
+    <!-- Official Document Box -->
+    <div class="billing-doc-container">
         
-        <!-- Watermark LUNAS jika status Paid -->
-        <?php if ($trx['status_pembayaran'] === 'Paid'): ?>
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05] select-none rotate-[-25deg]">
-                <span class="text-9xl font-black text-black tracking-widest border-8 border-black px-12 py-4 rounded">
-                    LUNAS
-                </span>
-            </div>
-        <?php endif; ?>
-
         <!-- Kop Dokumen Resmi -->
-        <div class="flex items-center justify-between border-b-2 border-black pb-5 mb-6">
-            <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 bg-black text-white rounded flex items-center justify-center text-xl font-bold">
+        <div class="doc-header">
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <div class="brand-mark" style="width: 44px; height: 44px; font-size: 1.1rem;">
                     P
                 </div>
                 <div>
-                    <h3 class="text-xs font-bold tracking-wider uppercase text-zinc-500">Kementerian Keuangan Republik Indonesia</h3>
-                    <h2 class="text-lg font-bold text-black uppercase tracking-tight">Direktorat Jenderal Pajak</h2>
-                    <p class="text-xs text-zinc-600">Kantor Pelayanan Pajak: <?= htmlspecialchars($trx['nama_kpp']) ?> [<?= $trx['kode_kpp'] ?>]</p>
+                    <div style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #52525B;">
+                        Kementerian Keuangan Republik Indonesia
+                    </div>
+                    <div style="font-size: 1.05rem; font-weight: 600; color: #0A0A0A; text-transform: uppercase;">
+                        Direktorat Jenderal Pajak
+                    </div>
+                    <div style="font-size: 0.75rem; color: #52525B;">
+                        Kantor Pelayanan Pajak: <?= htmlspecialchars($trx['nama_kpp']) ?> [<?= $trx['kode_kpp'] ?>]
+                    </div>
                 </div>
             </div>
-            <div class="text-right">
-                <span class="inline-block px-3 py-1 bg-black text-white font-mono font-bold text-xs rounded tracking-wider uppercase">
+            <div style="text-align: right;">
+                <span class="badge" style="background: #0A0A0A; color: #FFFFFF; font-family: monospace; font-size: 0.75rem; padding: 0.35rem 0.7rem;">
                     e-Billing DJP
                 </span>
-                <p class="text-[10px] text-zinc-500 font-mono mt-1">Ref: SI-PAJAK-BPN</p>
+                <div style="font-size: 0.7rem; color: #71717A; font-family: monospace; margin-top: 0.35rem;">Ref: SI-PAJAK-BPN</div>
             </div>
         </div>
 
-        <!-- Judul Surat -->
-        <div class="text-center mb-6">
-            <h1 class="text-xl font-bold text-black tracking-wide uppercase">
-                Bukti Penerimaan Negara (BPN)
-            </h1>
-            <p class="text-xs text-zinc-500">Surat Setoran Elektronik Berdasarkan Modul Penerimaan Negara Generasi Terpadu</p>
+        <!-- Judul Dokumen -->
+        <div class="doc-title">
+            <h1>Bukti Penerimaan Negara (BPN)</h1>
+            <p>Surat Setoran Elektronik Berdasarkan Modul Penerimaan Negara Generasi Terpadu</p>
         </div>
 
         <!-- Status Tag -->
-        <div class="flex justify-between items-center bg-zinc-50 border border-zinc-200 rounded p-4 mb-6">
+        <div class="status-box">
             <div>
-                <span class="text-xs text-zinc-500 block">Status Dokumen:</span>
+                <span style="font-size: 0.72rem; color: #71717A; display: block;">Status Dokumen:</span>
                 <?php if ($trx['status_pembayaran'] === 'Paid'): ?>
-                    <span class="text-sm font-bold text-black">
-                        [LUNAS] TRANSAKSI SAH &amp; TERVERIFIKASI
+                    <span style="font-size: 0.9rem; font-weight: 600; color: #0A0A0A;">
+                        [LUNAS] Transaksi Sah dan Terverifikasi
                     </span>
                 <?php else: ?>
-                    <span class="text-sm font-bold text-black">
-                        [PENDING] MENUNGGU PEMBAYARAN KAS NEGARA
+                    <span style="font-size: 0.9rem; font-weight: 600; color: #52525B;">
+                        [PENDING] Menunggu Pembayaran Kas Negara
                     </span>
                 <?php endif; ?>
             </div>
-            <div class="text-right">
-                <span class="text-xs text-zinc-500 block">Kode Billing:</span>
-                <span class="font-mono text-lg font-bold text-black tracking-widest"><?= htmlspecialchars($trx['kode_billing']) ?></span>
+            <div style="text-align: right;">
+                <span style="font-size: 0.72rem; color: #71717A; display: block;">Kode Billing:</span>
+                <span style="font-family: monospace; font-size: 1.15rem; font-weight: 600; letter-spacing: 0.1em; color: #0A0A0A;">
+                    <?= htmlspecialchars($trx['kode_billing']) ?>
+                </span>
             </div>
         </div>
 
-        <!-- Grid Data Wajib Pajak -->
-        <div class="mb-6 space-y-3">
-            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 pb-1">
-                A. Data Wajib Pajak
-            </h3>
-            <table class="w-full text-xs">
-                <tbody>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500 w-44">NPWP (16 Digit):</td>
-                        <td class="py-1.5 font-mono font-bold text-black"><?= htmlspecialchars($trx['npwp']) ?></td>
+        <!-- Data Wajib Pajak -->
+        <div class="section-header">A. Data Wajib Pajak</div>
+        <table class="doc-table">
+            <tbody>
+                <tr>
+                    <td class="label-col">NPWP (16 Digit):</td>
+                    <td class="val-col" style="font-family: monospace; font-weight: 600;"><?= htmlspecialchars($trx['npwp']) ?></td>
+                </tr>
+                <?php if ($trx['nik']): ?>
+                    <tr>
+                        <td class="label-col">NIK:</td>
+                        <td class="val-col" style="font-family: monospace;"><?= htmlspecialchars($trx['nik']) ?></td>
                     </tr>
-                    <?php if ($trx['nik']): ?>
-                        <tr class="border-b border-zinc-100">
-                            <td class="py-1.5 text-zinc-500">NIK:</td>
-                            <td class="py-1.5 font-mono text-black"><?= htmlspecialchars($trx['nik']) ?></td>
-                        </tr>
-                    <?php endif; ?>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Nama Wajib Pajak:</td>
-                        <td class="py-1.5 font-bold text-black uppercase"><?= htmlspecialchars($trx['nama_wp']) ?></td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Kategori Entitas:</td>
-                        <td class="py-1.5 text-zinc-800"><?= htmlspecialchars($trx['jenis_wp']) ?></td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Alamat Terdaftar:</td>
-                        <td class="py-1.5 text-zinc-700"><?= htmlspecialchars($trx['alamat']) ?></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                <?php endif; ?>
+                <tr>
+                    <td class="label-col">Nama Wajib Pajak:</td>
+                    <td class="val-col" style="font-weight: 600; text-transform: uppercase;"><?= htmlspecialchars($trx['nama_wp']) ?></td>
+                </tr>
+                <tr>
+                    <td class="label-col">Kategori Entitas:</td>
+                    <td class="val-col"><?= htmlspecialchars($trx['jenis_wp']) ?></td>
+                </tr>
+                <tr>
+                    <td class="label-col">Alamat Terdaftar:</td>
+                    <td class="val-col"><?= htmlspecialchars($trx['alamat']) ?></td>
+                </tr>
+            </tbody>
+        </table>
 
-        <!-- Grid Rincian Pembayaran -->
-        <div class="mb-6 space-y-3">
-            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 pb-1">
-                B. Rincian Setoran Pajak
-            </h3>
-            <table class="w-full text-xs">
-                <tbody>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500 w-44">Kode Akun Pajak (KAP):</td>
-                        <td class="py-1.5 font-mono font-bold text-black"><?= htmlspecialchars($trx['kode_akun_pajak']) ?> - <?= htmlspecialchars($trx['nama_jenis_pajak']) ?></td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Tarif Standar:</td>
-                        <td class="py-1.5 font-mono text-black"><?= number_format($trx['tarif_standar'], 2) ?>%</td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Dasar Pengenaan Pajak (DPP):</td>
-                        <td class="py-1.5 font-mono font-semibold text-black"><?= formatRupiah($trx['dpp']) ?></td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Nomor Transaksi Negara (NTPN):</td>
-                        <td class="py-1.5 font-mono font-bold text-black text-sm tracking-wider">
-                            <?= htmlspecialchars($trx['ntpn'] ?? 'MENUNGGU SETORAN KAS NEGARA') ?>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Bank Persepsi:</td>
-                        <td class="py-1.5 font-semibold text-black"><?= htmlspecialchars($trx['bank_persepsi'] ?? '-') ?></td>
-                    </tr>
-                    <tr class="border-b border-zinc-100">
-                        <td class="py-1.5 text-zinc-500">Waktu Pembayaran:</td>
-                        <td class="py-1.5 font-mono text-black"><?= formatTanggalIndo($trx['tanggal_bayar']) ?></td>
-                    </tr>
-                    <tr class="bg-zinc-50">
-                        <td class="py-2.5 px-2 text-black font-bold text-sm">Jumlah Pajak Disetor:</td>
-                        <td class="py-2.5 px-2 font-mono font-bold text-xl text-black"><?= formatRupiah($trx['jumlah_bayar']) ?></td>
-                    </tr>
-                    <tr class="bg-zinc-50/50">
-                        <td class="py-2 px-2 text-zinc-500 italic">Terbilang:</td>
-                        <td class="py-2 px-2 font-semibold text-zinc-800 italic"># <?= strtoupper(terbilang($trx['jumlah_bayar'])) ?> RUPIAH #</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <!-- Rincian Setoran -->
+        <div class="section-header">B. Rincian Setoran Pajak</div>
+        <table class="doc-table">
+            <tbody>
+                <tr>
+                    <td class="label-col">Kode Akun Pajak:</td>
+                    <td class="val-col" style="font-family: monospace; font-weight: 600;">
+                        <?= htmlspecialchars($trx['kode_akun_pajak']) ?> - <?= htmlspecialchars($trx['nama_jenis_pajak']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-col">Tarif Standar:</td>
+                    <td class="val-col" style="font-family: monospace;"><?= number_format($trx['tarif_standar'], 2) ?>%</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Dasar Pengenaan (DPP):</td>
+                    <td class="val-col" style="font-family: monospace;"><?= formatRupiah($trx['dpp']) ?></td>
+                </tr>
+                <tr>
+                    <td class="label-col">Nomor Transaksi (NTPN):</td>
+                    <td class="val-col" style="font-family: monospace; font-weight: 600; letter-spacing: 0.05em;">
+                        <?= htmlspecialchars($trx['ntpn'] ?? 'MENUNGGU SETORAN KAS NEGARA') ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-col">Bank Persepsi:</td>
+                    <td class="val-col"><?= htmlspecialchars($trx['bank_persepsi'] ?? '-') ?></td>
+                </tr>
+                <tr>
+                    <td class="label-col">Waktu Pembayaran:</td>
+                    <td class="val-col" style="font-family: monospace;"><?= formatTanggalIndo($trx['tanggal_bayar']) ?></td>
+                </tr>
+                <tr class="total-highlight">
+                    <td style="color: #0A0A0A; font-weight: 600;">Jumlah Pajak Disetor:</td>
+                    <td style="font-family: monospace; font-size: 1.2rem !important; font-weight: 700; color: #0A0A0A;">
+                        <?= formatRupiah($trx['jumlah_bayar']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-col" style="font-style: italic;">Terbilang:</td>
+                    <td class="val-col" style="font-style: italic; color: #52525B;">
+                        # <?= strtoupper(terbilang($trx['jumlah_bayar'])) ?> RUPIAH #
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <!-- Catatan Legalitas -->
-        <div class="mt-8 pt-6 border-t border-zinc-300 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-600">
-            <div class="space-y-1 text-center sm:text-left">
-                <p class="font-bold text-black">Ketentuan Resmi:</p>
-                <p class="text-[11px] text-zinc-500 max-w-md">
-                    BPN ini dicetak melalui Sistem Basis Data Perpajakan SI-PAJAK terhubung dan diakui sebagai Bukti Penerimaan Surat Setoran Pajak yang sah sesuai regulasi Direktorat Jenderal Pajak.
-                </p>
-                <p class="text-[10px] text-zinc-400 font-mono">Dicetak pada: <?= date('d/m/Y H:i:s') ?> WIB</p>
+        <div class="doc-footer">
+            <div style="flex: 1;">
+                <div style="font-weight: 600; color: #0A0A0A; margin-bottom: 0.2rem;">Ketentuan Resmi:</div>
+                <div style="line-height: 1.5; color: #71717A;">
+                    BPN ini diterbitkan melalui Sistem Basis Data Perpajakan SI-PAJAK terpadu dan sah sebagai Bukti Penerimaan Surat Setoran Pajak sesuai regulasi Direktorat Jenderal Pajak Republik Indonesia.
+                </div>
+                <div style="font-family: monospace; font-size: 0.7rem; color: #A1A1AA; margin-top: 0.35rem;">
+                    Dicetak pada: <?= date('d/m/Y H:i:s') ?> WIB
+                </div>
             </div>
             
-            <div class="text-center flex-shrink-0">
-                <div class="w-24 h-24 border-2 border-black rounded flex flex-col items-center justify-center p-1 text-[9px] text-black">
-                    <span class="font-bold text-base">DJP</span>
-                    <span>TERVALIDASI</span>
+            <div style="text-align: center;">
+                <div class="stamp-box">
+                    <span style="font-weight: 700; font-size: 1.05rem; letter-spacing: 0.05em;">DJP</span>
+                    <span style="font-size: 0.55rem; letter-spacing: 0.05em; font-weight: 600;">TERVALIDASI</span>
                 </div>
-                <span class="text-[9px] text-zinc-500 font-mono mt-1 block">Otentikasi Digital</span>
+                <span style="font-size: 0.65rem; color: #71717A; font-family: monospace; display: block; margin-top: 0.25rem;">
+                    Otentikasi Digital
+                </span>
             </div>
         </div>
 
